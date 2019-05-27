@@ -1,0 +1,568 @@
+@font-face {
+    font-family: "나눔고딕";
+    src: local('YUNJINIM') url('/static/font/NanumGothic.ttf') format("truetype");
+}
+
+body {
+    font-family: "나눔고딕";
+    font-size: 12px;
+    margin: 0;
+}
+
+#half_bg {
+    background:linear-gradient(120deg, #3bc5a3 0%, #CAE7DF 100%);
+    position: absolute;
+    top: 0;
+    height: 230px;
+    width: 100%;
+    z-index: -1;
+}
+
+#navbar {
+    width: 100%;
+    height: 55px;
+    position: absolute;
+    top: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+
+#title {
+    color: #FFF;
+    margin-left: 20px;
+}
+
+#menu_icon {
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
+    z-index: 1;
+}
+
+/* 사이드바 시작 */
+/* The sidebar menu */
+.sidebar {
+    height: 91%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 3; /* Stay on top */
+    top: 0;
+    right: 0;
+    box-shadow: -3px 0px 2px 0px #555; 
+    background-color: rgba(255,255,255,0.9); /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.2s; /* 0.5 second transition effect to slide in the sidebar */
+}
+
+/* The sidebar links */
+.sidebar a {
+    padding: 5px 8px 8px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #818181;
+    display: block;
+    transition: 0.1s;
+}
+
+.sidebar a p {
+    margin: 0px;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidebar a:hover {
+    color: #000;
+}
+
+/* Position and style the close button (top right corner) */
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    left: -50px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* The button used to open the sidebar */
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #FFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+}
+/* 사이드바 끝 */
+
+/* 모달 시작 */
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 15% from the top and centered */
+    padding: 20px 20px 90px 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */                          
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* 모달 끝 */
+
+/* 모달 내부 시작 */
+
+#modal_signin form h4 {
+    margin-bottom: 3px;
+}
+
+#signin_submit {
+    margin: 10px auto;
+    position: absolute;
+    left: 50%;
+    transform:translate(-50%);
+    background-color: #3bc5a3;
+    border-width: 0px;
+    border-radius: 3px;
+    font-family: "나눔고딕";
+    width: 40%;
+    height: 35px;
+}
+
+/* 모달 내부 끝 */
+
+
+.openbtn:hover {
+    background-color: #444;
+}
+
+.contents1 {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 75px;
+    margin: none;
+    z-index: 0;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0);
+}
+
+#contents2 {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: none;
+    z-index: 0;
+    position: absolute;
+    top: 250px;
+    height: 60%;
+    overflow-y:auto;
+    margin: auto 0;
+    -ms-overflow-style: none;  
+    transition-property: border-color;
+    transition-duration: 0.5s;
+    border-color: rgba(255,255,255,0);
+    
+}
+
+::-webkit-scrollbar { 
+    display: none !important;
+}
+
+.status {
+    width: calc(100% - 50px);
+    height: 130px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.status form {
+    min-width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#login_table {
+    min-width: 100%;
+}
+
+#login_table tr {
+    height: 30px;
+}
+
+.login_td_input {
+    width: 75%;
+}
+
+#login_td_submit {
+    width: 23%;
+}
+
+.login_input {
+    height: 30px;
+    width: 100%;
+    padding: 2px 3px;
+    font-family: "나눔고딕";
+}
+
+#login_button {
+    height: 63px;
+    width: 100%;
+    background-color: #FFF;
+    border-width: 0px;
+    border-radius: 3px;
+    font-family: "나눔고딕"
+}
+
+#reservation_table {
+    width: 90%;
+}
+
+#reservation_table tr th {
+    vertical-align: middle;
+    min-width: 40px;
+}
+
+#status_button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#status_button a input {
+    background: #FFF;
+    margin-top: 15px;
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+}
+
+.colleges_xscroll {
+    width: auto;
+    height: calc(100vh - 240px);
+    overflow-x: scroll;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: row;
+    -webkit-overflow-scrolling:touch;
+}
+
+.college {
+    float: left;
+    width: 85%;
+    height: 50px;
+    margin: 40px 0 15px 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.college_namediv {
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    padding: 10px 20px 0 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.college_name {
+    font-size: 16px;
+    margin: 0;
+}
+
+.college_statdiv {
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    padding: 10px 20px 10px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.college_stat {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+
+.room_div {
+    float: left;
+    width: 90%;
+    height: 50px;
+    background: rgba(202,231,223,0.4);
+    border-radius: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.room_namediv {
+    box-sizing: border-box;
+    padding: 5px 20px;
+}
+
+.room_statdiv {
+    box-sizing: border-box;
+    height: 50px;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.room_stat {
+    margin: 0px 3px;
+}
+
+.remain_room {
+    font-size: 16px;
+    margin: 0 5px 0 8px;
+}
+
+.room_timetable_div {
+    box-sizing: border-box;
+    width: 85%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 15px;
+    transition: height 1s, width 1s, padding 1s, visibility 1s, opacity 0.5s ease-out;
+}
+
+.tt_table {
+    width: 80%;
+    border-collapse: collapse;
+}
+
+.tt_table th {
+    font-size: 13px;
+    padding: 5px 0;
+}
+
+.tt_table td {
+    font-size: 12px;
+}
+
+.tt_table tr {
+    height: 30px;
+}
+
+.tt_table tr:nth-child(2n-1) {
+    background: #dbdbdb63;
+}
+
+.tt_time {
+    width: 35%;
+    text-align: center;
+}
+
+.tt_check {
+    text-align: center;
+    padding: 0px;
+}
+
+.tt_check label {
+    display: block;
+}
+
+.tt_checkbox {
+    width: 100%;
+    height: 30px;
+    /* visibility: hidden; */
+}
+
+.tt_sel_result {
+    width: 80%;
+    height: 150px;
+    background: #3bc5a380;
+    padding: 15px;
+    box-sizing: border-box;
+    display: none;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    
+}
+
+.tt_sel_time {
+    width: 80%;
+    font-size: 12px;
+    vertical-align:top;
+}
+
+.tt_sel_time td, th {
+    vertical-align:top;
+}
+
+
+/* record.html 시작 */
+
+.status h3 {
+    margin: 0 0 15px 0;
+}
+
+#info_table {
+    width: 100%;
+    font-size: 14px;
+    height: 70%;
+}
+
+#info_table tr th {
+    min-width: 40px;
+    vertical-align: middle;
+    word-break: break-all;
+}
+
+.info_colon {
+    min-width: 15px;
+    font-size: 14px;
+}
+
+.info_content_td {
+    min-width: 200px;
+    font-size: 14px;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.record_div {
+    margin: 15px 0 0 0;
+    width: 85%;
+    min-width: 85%;
+    background: #3bc5a366;
+    border-radius: 5px;
+    height: 120px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.record_day {
+    width: 100px;
+    min-width: 100px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.record_day img {
+    width: 70px;
+}
+
+.record_day p {
+    width: 34px;
+    text-align: center;
+    z-index:1;
+    position: absolute;
+}
+
+.record_info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.record_table {
+    width: 100%;
+    font-size: 12px;
+}
+
+.record_table tr th {
+    width: 25%;
+    min-width: 25%;
+    vertical-align: top;
+    text-align: justify;
+    
+}
+
+.record_table tr td {
+    width: 66%;
+    min-width: 66%;
+    vertical-align: top;
+    font-size: 12px;
+}
+
+/* record.html 끝 */
+
+/* Swiper 시작 */
+.swiper-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.swiper-pagination{
+  position:absolute;
+  text-align:center;
+  -webkit-transition:.3s opacity;
+  -o-transition:.3s opacity;
+  transition:.3s opacity;
+  top: 0px;
+  margin: 20px 0 10px 0;
+  z-index:0;
+}
+
+.swiper-wrapper {
+  margin: auto;
+}
+
+.swiper-slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Swiper 끝 */

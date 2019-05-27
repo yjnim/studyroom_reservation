@@ -1,0 +1,91 @@
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>팀플룸 예약</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/swiper.min.css' %}?v=1.0" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}?v=1.0" />
+    
+<body>
+    <div id="navbar">
+        <a href="{% url 'main' %}"><p id="title">팀플룸 예약 시스템</p></a>
+        <a onclick="openNav()"><img id="menu_icon" src="{% static 'img/menuicon.svg' %}"></a>
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            
+            <!-- 로그인 하면 나타날 부분 -->
+            {% if user.is_authenticated %}
+            <a href="{% url 'record' %}"><p>장소 대여기록</p></a>
+            <a href="javascript:{document.getElementById('logout').submit()}"><p>로그아웃</p></a>
+            <form id="logout" method="POST" action="{% url 'logout' %}">
+                {% csrf_token %} <input type="hidden" />
+            </form>
+            
+
+            <!-- 로그인 안했을 때 나타날 부분 -->
+            {% else %}
+            <a href="#" id="myBtn" onclick="modalOn()"><p>회원가입</p></a>
+            <a href="#"><p>비밀번호 찾기</p></a>
+            {% endif %}
+        </div>
+    </div>
+    <div id="half_bg"></div>
+
+    <!-- 모달 부분 -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="modalOff()">&times;</span>                                                               
+            <div id="modal_signin">
+                <h3>회원가입</h3>
+
+                <form method="POST" action="{% url 'signup' %}" id="form_signup">
+                    {% csrf_token %}
+                    <h4>아이디</h4>
+                    <input id="signup_id" name="username" type="text" value="" class="login_input">
+                    <h4>비밀번호</h4>
+                    <input id="signup_pw1" name="password1" type="password" value="" class="login_input">
+                    <h4>비밀번호 확인</h4>
+                    <input id="signup_pw2" name="password2" type="password" value="" class="login_input">
+                    <h4>이메일</h4>
+                    <input id="signup_email" name="email" type="email" value="" class="login_input">
+                    <h4>이름</h4>
+                    <input id="signup_name" name="name" type="text" value="" class="login_input">
+                    <h4>학번</h4>
+                    <input id="signup_stdnum" name="studentnum" type="number" value="" class="login_input">
+                    <h4>단과대학</h4>
+                    <select name="sel_mycoll" onchange="selMyCollege(this)" id="sel_mycoll">
+                        <option value="0">단과대학 선택</option>
+                        <option value="1">경상대학</option>
+                        <option value="2">공학대학</option>
+                        <option value="3">국제문화대학</option>
+                        <option value="4">과학기술대학</option>
+                        <option value="5">디자인대학</option>
+                        <option value="6">소프트웨어융합대학</option>
+                        <option value="7">언론정보대학</option>
+                        <option value="8">예체능대학</option>
+                    </select>
+                    <h4>전공</h4>
+                    <select name="sel_department" id="sel_dep">
+                        <option>전공 선택</option>
+                    </select>
+                    <br>
+                    <input name="validation" type="button" value="가입하기" id="signin_submit" onclick="valid()">
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+      
+
+    {% block content %}
+    {% endblock %}
+    
+
+    <script type="text/javascript" src="{% static 'js/swiper.min.js' %}?v=1.0"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-3.4.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/script.js' %}?v=1.0"></script>
+    
+</body>

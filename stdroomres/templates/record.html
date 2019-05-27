@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="contents1">
+
+	<!-- 내 정보 표시 -->
+	<div class="status" style="justify-content: flex-start;">
+
+		<h3>내 정보</h3>
+
+		<table id="info_table">
+			<tr>
+				<th>이름</th>
+				<td class="info_colon"> : </td>
+				<td class="info_content_td">장윤지</td>
+			</tr>
+
+			<tr>
+				<th>학번</th>
+				<td class="info_colon"> : </td>
+				<td class="info_content_td">2016011330</td>
+			</tr>
+
+			<tr>
+				<th>학과</th>
+				<td class="info_colon"> : </td>
+				<td class="info_content_td">국제문화대학 중국학과</td>
+			</tr>
+
+			<tr>
+				<th>경고</th>
+				<td class="info_colon"> : </td>
+				<td class="info_content_td">0회</td>
+			</tr>
+
+		</table>
+
+	</div>
+
+	<!-- 내가 예약한 기록 표시 -->
+	<div class="container">
+		<div class="record_div">
+
+			<!-- 예약한 날짜 -->
+			<div class="record_day">
+				<img src="{% static 'img/calendar.svg' %}" alt="날짜 표시">
+				<p>2019<br>6/5</p>
+			</div>
+
+			<div class="record_info">
+				<table class="record_table">
+
+					<tr>
+						<th>공간명</th>
+						<td>국제문화대학<br>꿈의둥지 3번방</td>
+					</tr>
+					<tr>
+						<th>이용시간</th>
+						<td>12:00 ~ 12:59</td>
+					</tr>
+					<tr>
+						<th>이용자</th>
+						<td>3명</td>
+					</tr>
+
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="record_div">
+
+			<!-- 예약한 날짜 -->
+			<div class="record_day">
+				<img src="{% static 'img/calendar.svg' %}" alt="날짜 표시">
+				<p>2019<br>5/29</p>
+			</div>
+
+			<div class="record_info">
+				<table class="record_table">
+
+					<tr>
+						<th>공간명</th>
+						<td>학생복지관<br>Exchange Room 01</td>
+					</tr>
+					<tr>
+						<th>이용시간</th>
+						<td>17:00 ~ 18:59</td>
+					</tr>
+					<tr>
+						<th>이용자</th>
+						<td>5명</td>
+					</tr>
+
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}

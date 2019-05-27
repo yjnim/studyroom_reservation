@@ -1,0 +1,2083 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- 배경 DIV -->
+<div id="half_bg"></div>
+
+<!-- 내용 들어갈 곳 -->
+<div class="contents1">
+
+	<!-- 로그인 했을 때는 예약하는 부분 -->
+	{% if user.is_authenticated %}
+	<div class="status">
+		<table id="reservation_table">
+			<tr>
+				<th rowspan="2">공간</th>
+				<td rowspan="2"> : </td>
+				<td colspan="4">
+					<select name="sel_college" onchange="selCollege(this)">
+						<option value="0">건물 선택</option>
+						<option value="1">국제문화대학</option>
+						<option value="2">소프트웨어융합대학</option>
+						<option value="3">언론정보대학</option>
+						<option value="4">학술정보관</option>
+						<option value="5">학생복지관</option>
+					</select>
+				</td>
+			</tr>	
+
+			<tr>
+				<td colspan="4" name="td_room">
+					<select name="sel_room" id="sel_room">
+						<option>공간 선택</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<th>시간</th>
+				<td> : </td>
+				<td style="width:25%;">
+					<select name="sel_time" onchange="selTime(this)">
+							<option value="0">시간 선택</option>
+							<option value="9">9시</option>
+							<option value="10">10시</option>
+							<option value="11">11시</option>
+							<option value="12">12시</option>
+							<option value="13">13시</option>
+							<option value="14">14시</option>
+							<option value="15">15시</option>
+							<option value="16">16시</option>
+							<option value="17">17시</option>
+							<option value="18">18시</option>
+							<option value="19">19시</option>
+							<option value="20">20시</option>
+							<option value="21">21시</option>
+							<option value="22">22시</option>
+					</select>
+				</td>
+				<td style="min-width:40px; text-align: left;">부터</td>
+				<td>
+					<select id="sel_timeamount" style="min-width: 80%;">
+						<option></option>
+					</select>
+				</td>
+				<td style="min-width:40px; text-align: left;">시간</td>
+			</tr>
+
+			<tr>
+				<th>인원</th>
+				<td> : </td>
+				<td colspan="4"><input type="number" maxlength="2" name="input_person" style="width: 10%;"> 명</td>
+			</tr>
+
+		</table>
+		<div id="status_button">
+			<a href="{% url 'resconfirm' %}"><input type="submit" value="예약"></a>
+		</div>
+	</div>
+	<br>
+	
+	<!-- 로그인 안했을 때 뜨는 곳 -->
+	{% else %}
+	<div class="status">
+
+		<form method="POST" action="{% url 'login' %}">
+		{% csrf_token %}
+			<table id="login_table">
+
+				<!-- 아이디 -->
+				<tr>
+					<td class="login_td_input"><input name="username" type="text" value="" class="login_input"></td>
+					<td rowspan="2" id="login_td_submit"><input name="submit" type="submit" value="로그인" id="login_button"></td>
+				</th>
+
+				<!-- 비밀번호 -->
+				<tr>
+					<td class="login_td_input"><input name="password" type="password" value="" class="login_input"></td>
+				</tr>
+
+			</table>
+		</form>
+		<small style="margin: 3px;">로그인 후 예약하실 수 있습니다.<br>회원가입이나 비밀번호 찾기는 사이드바를 이용해주세요.</small>
+	</div>
+	{% endif %}
+
+
+
+	<!-- Swiper 시작 -->
+  <div class="swiper-container">
+		<!-- Add Pagination -->
+		<div class="swiper-pagination"></div>
+		
+    <div class="swiper-wrapper">
+
+			<!-- 국제문화대학 -->
+      <div class="swiper-slide" name="lancul">
+				<div class="college">
+					<div class="college_namediv">
+						<p class="college_name">국제문화대학</p>
+					</div>
+					<div class="college_statdiv">
+						<div class="college_stat">
+							<span>현재 빈 공간</span>
+							<span class="remain_room" name="lancul_remainroom">6</span>
+							<span> / 6</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- 국제문화대학 1번방 -->
+				<div class="room_div" name="lancul11">
+					<div class="room_namediv">
+						<p class="room_name">꿈의둥지 1번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="lancul11tt">
+					<table class="tt_table" name="11tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="1_1_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="1_1_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="1_1_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="1_1_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="1_1_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="1_1_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="1_1_15" style="background-color: #e98a4a;">
+								<p style="text-align: center;">2016011330 장윤지<br>외 2명</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="1_1_16" style="background-color: #e98a4a;">
+									<p style="text-align: center;">2016011330 장윤지<br>외 2명</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="1_1_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="1_1_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="1_1_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="1_1_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="1_1_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="1_1_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- 국제문화대학 2번방 -->
+				<div class="room_div" name="lancul12">
+					<div class="room_namediv">
+						<p class="room_name">꿈의둥지 2번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="lancul12tt">
+					<table class="tt_table" name="12tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="1_2_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="1_2_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="1_2_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="1_2_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="1_2_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="1_2_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="1_2_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="1_2_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="1_2_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="1_2_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="1_2_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="1_2_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="1_2_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="1_2_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- 국제문화대학 3번방 -->
+				<div class="room_div" name="lancul13">
+					<div class="room_namediv">
+						<p class="room_name">꿈의둥지 3번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="lancul13tt">
+					<table class="tt_table" name="13tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="1_3_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="1_3_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="1_3_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="1_3_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="1_3_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="1_3_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="1_3_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="1_3_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="1_3_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="1_3_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="1_3_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="1_3_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="1_3_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="1_3_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 국제문화대학 4번방 -->
+				<div class="room_div" name="lancul14">
+					<div class="room_namediv">
+						<p class="room_name">랩실 1번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="lancul14tt">
+					<table class="tt_table" name="14tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="1_4_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="1_4_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="1_4_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="1_4_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="1_4_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="1_4_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="1_4_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="1_4_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="1_4_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="1_4_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="1_4_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="1_4_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="1_4_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="1_4_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- 국제문화대학 5번방 -->
+				<div class="room_div" name="lancul15">
+					<div class="room_namediv">
+						<p class="room_name">랩실 2번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="lancul15tt">
+					<table class="tt_table" name="15tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="1_5_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="1_5_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="1_5_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="1_5_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="1_5_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="1_5_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="1_5_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="1_5_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="1_5_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="1_5_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="1_5_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="1_5_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="1_5_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="1_5_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- 국제문화대학 6번방 -->
+				<div class="room_div" name="lancul16">
+					<div class="room_namediv">
+						<p class="room_name">랩실 3번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="lancul16tt">
+					<table class="tt_table" name="16tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="1_6_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="1_6_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="1_6_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="1_6_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="1_6_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="1_6_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="1_6_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="1_6_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="1_6_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="1_6_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="1_6_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="1_6_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="1_6_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="1_6_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+
+			<!-- 소프트웨어융합대학 -->
+      <div class="swiper-slide" name="comput">
+
+				<div class="college">
+					<div class="college_namediv">
+						<p class="college_name">소프트웨어융합대학</p>
+					</div>
+					<div class="college_statdiv">
+						<div class="college_stat">
+							<span>현재 빈 공간</span>
+							<span class="remain_room">2</span>
+							<span> / 2</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- 소프트웨어융합대학 1번방 -->
+				<div class="room_div" name="comput21">
+					<div class="room_namediv">
+						<p class="room_name">Knowledge Factory 미팅룸 1번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="comput21tt">
+					<table class="tt_table" name="21tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="2_1_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="2_1_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="2_1_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="2_1_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="2_1_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="2_1_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="2_1_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="2_1_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="2_1_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="2_1_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="2_1_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="2_1_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="2_1_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="2_1_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- 소프트웨어융합대학 2번방 -->
+				<div class="room_div" name="comput22">
+					<div class="room_namediv">
+						<p class="room_name">Knowledge Factory 미팅룸 2번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="comput22tt">
+					<table class="tt_table" name="22tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="2_2_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="2_2_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="2_2_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="2_2_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="2_2_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="2_2_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="2_2_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="2_2_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="2_2_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="2_2_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="2_2_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="2_2_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="2_2_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="2_2_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<!-- 언론정보대학 -->
+      <div class="swiper-slide" name="inform">
+				<div class="college">
+					<div class="college_namediv">
+						<p class="college_name">언론정보대학</p>
+					</div>
+					<div class="college_statdiv">
+						<div class="college_stat">
+							<span>현재 빈 공간</span>
+							<span class="remain_room">3</span>
+							<span> / 3</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- 언론정보대학 1번방 -->
+				<div class="room_div" name="inform31">
+					<div class="room_namediv">
+						<p class="room_name">오픈스페이스 1번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+	
+				<div class="room_timetable_div" name="inform31tt">
+					<table class="tt_table" name="31tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="3_1_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="3_1_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="3_1_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="3_1_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="3_1_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="3_1_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="3_1_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="3_1_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="3_1_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="3_1_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="3_1_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="3_1_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="3_1_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="3_1_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- 언론정보대학 2번방 -->
+				<div class="room_div" name="inform32">
+					<div class="room_namediv">
+						<p class="room_name">오픈스페이스 2번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+	
+				<div class="room_timetable_div" name="inform32tt">
+					<table class="tt_table" name="32tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="3_2_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="3_2_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="3_2_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="3_2_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="3_2_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="3_2_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="3_2_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="3_2_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="3_2_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="3_2_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="3_2_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="3_2_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="3_2_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="3_2_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 언론정보대학 3번방 -->
+				<div class="room_div" name="inform33">
+					<div class="room_namediv">
+						<p class="room_name">오픈스페이스 3번방</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="inform33tt">
+					<table class="tt_table" name="33tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="3_3_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="3_3_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="3_3_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="3_3_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="3_3_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="3_3_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="3_3_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="3_3_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="3_3_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="3_3_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="3_3_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="3_3_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="3_3_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="3_3_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+
+			<!-- 학술정보관 -->
+      <div class="swiper-slide" name="librar">
+
+				<div class="college">
+					<div class="college_namediv">
+						<p class="college_name">학술정보관</p>
+					</div>
+					<div class="college_statdiv">
+						<div class="college_stat">
+							<span>현재 빈 공간</span>
+							<span class="remain_room">5</span>
+							<span> / 5</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- 학술정보관 1번방 -->
+				<div class="room_div" name="librar41">
+					<div class="room_namediv">
+						<p class="room_name">그룹스터디룸 E실</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="librar41tt">
+					<table class="tt_table" name="41tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="4_1_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="4_1_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="4_1_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="4_1_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="4_1_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="4_1_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="4_1_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="4_1_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="4_1_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="4_1_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="4_1_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="4_1_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="4_1_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="4_1_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- 학술정보관 2번방 -->
+				<div class="room_div" name="librar42">
+					<div class="room_namediv">
+						<p class="room_name">그룹스터디룸 R실</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="librar42tt">
+					<table class="tt_table" name="42tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="4_2_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="4_2_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="4_2_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="4_2_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="4_2_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="4_2_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="4_2_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="4_2_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="4_2_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="4_2_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="4_2_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="4_2_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="4_2_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="4_2_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 학술정보관 3번방 -->
+				<div class="room_div" name="librar43">
+					<div class="room_namediv">
+						<p class="room_name">그룹스터디룸 I실</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="librar43tt">
+					<table class="tt_table" name="43tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="4_3_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="4_3_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="4_3_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="4_3_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="4_3_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="4_3_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="4_3_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="4_3_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="4_3_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="4_3_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="4_3_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="4_3_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="4_3_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="4_3_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 학술정보관 4번방 -->
+				<div class="room_div" name="librar44">
+					<div class="room_namediv">
+						<p class="room_name">그룹스터디룸 C실</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="librar44tt">
+					<table class="tt_table" name="44tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="4_4_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="4_4_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="4_4_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="4_4_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="4_4_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="4_4_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="4_4_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="4_4_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="4_4_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="4_4_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="4_4_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="4_4_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="4_4_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="4_4_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 학술정보관 5번방 -->
+				<div class="room_div" name="librar45">
+					<div class="room_namediv">
+						<p class="room_name">그룹스터디룸 A실</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+
+				<div class="room_timetable_div" name="librar45tt">
+					<table class="tt_table" name="45tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="4_5_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="4_5_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="4_5_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="4_5_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="4_5_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="4_5_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="4_5_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="4_5_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="4_5_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="4_5_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="4_5_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="4_5_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="4_5_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="4_5_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+
+
+			</div>
+
+			<!-- 학생복지관 -->
+      <div class="swiper-slide" name="welfar">
+
+				<div class="college">
+					<div class="college_namediv">
+						<p class="college_name">학생복지관</p>
+					</div>
+					<div class="college_statdiv">
+						<div class="college_stat">
+							<span>현재 빈 공간</span>
+							<span class="remain_room">5</span>
+							<span> / 5</span>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 학생복지관 1번방 -->
+				<div class="room_div" name="welfar51">
+					<div class="room_namediv">
+						<p class="room_name">Exchange Room 01</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+	
+				<div class="room_timetable_div" name="welfar51tt">
+					<table class="tt_table" name="51tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="5_1_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="5_1_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="5_1_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="5_1_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="5_1_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="5_1_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="5_1_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="5_1_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="5_1_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="5_1_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="5_1_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="5_1_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="5_1_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="5_1_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 학생복지관 2번방 -->
+				<div class="room_div" name="welfar52">
+					<div class="room_namediv">
+						<p class="room_name">Exchange Room 02</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+	
+				<div class="room_timetable_div" name="welfar52tt">
+					<table class="tt_table" name="52tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="5_2_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="5_2_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="5_2_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="5_2_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="5_2_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="5_2_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="5_2_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="5_2_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="5_2_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="5_2_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="5_2_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="5_2_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="5_2_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="5_2_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 학생복지관 3번방 -->
+				<div class="room_div" name="welfar53">
+					<div class="room_namediv">
+						<p class="room_name">Exchange Room 03</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+	
+				<div class="room_timetable_div" name="welfar53tt">
+					<table class="tt_table" name="53tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="5_3_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="5_3_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="5_3_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="5_3_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="5_3_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="5_3_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="5_3_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="5_3_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="5_3_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="5_3_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="5_3_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="5_3_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="5_3_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="5_3_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 학생복지관 4번방 -->
+				<div class="room_div" name="welfar54">
+					<div class="room_namediv">
+						<p class="room_name">Exchange Room 04</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+	
+				<div class="room_timetable_div" name="welfar54tt">
+					<table class="tt_table" name="54tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="5_4_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="5_4_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="5_4_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="5_4_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="5_4_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="5_4_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="5_4_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="5_4_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="5_4_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="5_4_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="5_4_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="5_4_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="5_4_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="5_4_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 학생복지관 5번방 -->
+				<div class="room_div" name="welfar55">
+					<div class="room_namediv">
+						<p class="room_name">Exchange Room 05</p>
+					</div>
+					<div class="room_statdiv">
+							<span class="room_stat">현재 공실</span>
+					</div>
+				</div>
+	
+				<div class="room_timetable_div" name="welfar55tt">
+					<table class="tt_table" name="55tt">
+						<tr>
+							<th class="tt_time">시간</th>
+							<th class="tt_check">사용여부</th>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 9시</td>
+							<td class="tt_check" name="5_5_9">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 10시</td>
+							<td class="tt_check" name="5_5_10">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오전 11시</td>
+							<td class="tt_check" name="5_5_11">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 12시</td>
+							<td class="tt_check" name="5_5_12">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 1시</td>
+							<td class="tt_check" name="5_5_13">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 2시</td>
+							<td class="tt_check" name="5_5_14">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 3시</td>
+							<td class="tt_check" name="5_5_15">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 4시</td>
+							<td class="tt_check" name="5_5_16">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 5시</td>
+							<td class="tt_check" name="5_5_17">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 6시</td>
+							<td class="tt_check" name="5_5_18">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 7시</td>
+							<td class="tt_check" name="5_5_19">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 8시</td>
+							<td class="tt_check" name="5_5_20">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 9시</td>
+							<td class="tt_check" name="5_5_21">
+							</td>
+						</tr>
+						<tr>
+							<td class="tt_time">오후 10시</td>
+							<td class="tt_check" name="5_5_22">
+							</td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+
+    </div>
+    
+    <!-- Add Arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+	</div>
+	<!-- Swiper 끝 -->
+</div>
+{% endblock %}

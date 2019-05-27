@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="contents1">
+
+	<!-- 내 정보 표시 -->
+	<div class="status" style="justify-content: flex-start;">
+
+		<h3>공간 예약 정보</h3>
+
+		<table id="info_table">
+			<tr>
+				<th>예약자</th>
+				<td class="info_colon"> : </td>
+				<td class="info_content_td">장윤지(2016011330, 중국학과)</td>
+			</tr>
+
+			<tr>
+				<th>공간</th>
+				<td class="info_colon"> : </td>
+				<td class="info_content_td">국제문화대학 꿈의둥지 1번방</td>
+			</tr>
+
+			<tr>
+				<th style="vertical-align: top;">시간</th>
+				<td style="vertical-align: top;" class="info_colon"> : </td>
+				<td class="info_content_td">5월 27일<br>15:00 ~ 16:59</td>
+			</tr>
+
+			<tr>
+				<th>인원</th>
+				<td class="info_colon"> : </td>
+				<td class="info_content_td">3명</td>
+			</tr>
+
+		</table>
+
+	</div>
+
+	<!-- 내가 예약한 기록 표시 -->
+	<div class="container" style="flex-direction: column;">
+		<h3 style="margin: auto; margin-top: 20px; margin-bottom: 5px;">아래 이용약관에 동의하셔야 공간을 이용하실 수 있습니다.</h3>
+		<div style="overflow-x:scroll; width:90%; height:220px; padding:5px; margin: auto;">
+				1.	신청서의 사용목적과 실제 내용이 상이할 경우 승인을 취소할 수 있으며, 이용기간 및 일일 이용시간을 준수해 주시기 바랍니다.<br>
+				2.	승인 후 학교행사 등 불가피한 사정으로 해당 시설물을 대학이 사용해야 할 경우 학교에 우선권이 있으며, 사전통보 후 승인을 취소할 수 있습니다.<br>
+				3.	신청내용을 이행하지 아니하거나 학교측의 정당한 요청사항을 거부할 경우에는 사용 중이라도 그 승인을 취소할 수 있습니다.<br>
+				4.	이용자는 본 시설물 이용시 원래의 상태를 보전하고 시설이 손상되지 않도록 최선을 다해야 하며, 손괴된 경우에는 본 대학에서 정한 손해배상액을 납부하여야 합니다.<br>
+				5.	시설물 사용과 관련된 직접 소모품은 사용자가 부담하며, 현수막 등 포스터 부착시는 사전협의가 필요합니다.<br>
+				6.	각종 안전사고에 대한 모든 책임은 사용자가 집니다.<br>
+				7.	교외 이용자의 경우 시설물 사용에 따른 공공요금(전기, 수도, 냉·난방 등)은 관련부서와 협의하여 사용료로 납부하여야 합니다.(시설안내 및 신청방법 참조)<br>
+				8.	행사시 본 시설물의 청결이 그대로 유지될 수 있도록 하고, 행사 종료 후 담당부서의 직원과 시설, 청결 등에 관한 이상 유무를 상호 확인하여야 합니다.<br>
+				9.	행사당일 주차비는 사용자가 부담하며, 관련 협의는 주차관리실 (02-961-0181) 과 직접 하시기 바랍니다.<br>
+				10.	예약신청 이전에 [사용안내]에서 예약시설에 대한 사항을 확인 후 신청하시고, 기타 자세한 문의는 운영팀으로 문의하시기 바랍니다.
+		</div>
+		<p style="margin: auto; margin-top: 20px; margin-bottom: 5px; padding: 0 15px;">
+			<input type="checkbox"> 본인은 이 사실을 주지하였고 이를 이행하지 않았을 경우 차후 이용에 불이익을 받더라도 이에 대해 이의가 없음을 확인합니다.
+		</p>
+		<div id="status_button">
+			<a href="{% url 'main' %}"><input type="submit" value="예약" style="background: green;"></a>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
