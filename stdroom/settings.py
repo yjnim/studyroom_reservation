@@ -29,7 +29,7 @@ DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '4snucfesuu^@!u-k#_it38m5%g3)ptl_d+6l)cmegtkusp^&^o')
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 #추가 '앱이름.모델이름'
 
