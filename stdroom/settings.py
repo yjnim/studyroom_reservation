@@ -25,13 +25,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
-DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '4snucfesuu^@!u-k#_it38m5%g3)ptl_d+6l)cmegtkusp^&^o')
+DEBUG = bool( os.environ.get('DJANGO_DEBUG', False) )
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 ALLOWED_HOSTS = ['*']
-
-#추가 '앱이름.모델이름'
 
 # Application definition
 
